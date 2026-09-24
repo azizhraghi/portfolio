@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f5f5f2" />
+  <meta name="description" content="Med Aziz Hraghi is an AI engineering student building multi-agent systems, computer vision products, and data-rich interfaces." />
+  <title>Med Aziz Hraghi — AI engineering portfolio</title>
+  <link rel="stylesheet" href="site.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2315161a'/%3E%3Cpath d='M14 46V18h6l12 16 12-16h6v28h-7V29L32 43 21 29v17z' fill='%23f5f5f2'/%3E%3Ccircle cx='51' cy='13' r='5' fill='%232d52ee'/%3E%3C/svg%3E" />
+  <style>
+    :root{--paper:#f5f5f2;--ink:#15161a;--muted:#62656c;--line:#d2d4d5;--blue:#2d52ee;--panel:#171a20;--panel-line:#393f49;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--paper);scroll-behavior:smooth}
+    *{box-sizing:border-box}body{margin:0}a{color:inherit;text-decoration:none}a:focus-visible{outline:3px solid var(--blue);outline-offset:4px}button{font:inherit}.skip{position:absolute;left:-9999px;top:8px;background:white;padding:12px;z-index:5}.skip:focus{left:8px}.shell{width:min(100% - 64px,1440px);margin:auto}.site-header{height:78px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:32px}.brand{font-weight:900;font-size:25px;letter-spacing:-.08em}.brand b{color:var(--blue)}.nav{display:flex;gap:30px;margin-left:auto;font-size:14px;font-weight:600}.nav a,.header-action{transition:color .2s}.nav a:hover,.header-action:hover{color:var(--blue)}.header-action{border-bottom:1px solid var(--ink);padding-bottom:4px;font-size:14px;font-weight:700}
+    .hero{min-height:calc(100svh - 78px);display:grid;grid-template-columns:1.16fr .84fr;gap:56px;align-items:stretch;padding:58px 0 50px}.hero-copy{display:flex;flex-direction:column;justify-content:space-between}.eyebrow,.micro{font-size:12px;letter-spacing:.16em;font-weight:800;text-transform:uppercase}.eyebrow{display:flex;align-items:center;gap:14px}.eyebrow:before{content:"";width:31px;height:2px;background:var(--blue)}h1{font-size:clamp(70px,9.4vw,154px);line-height:.86;letter-spacing:-.09em;margin:40px 0 0;font-weight:800}h1 span{color:var(--blue)}.hero-bottom{border-top:1px solid var(--line);padding-top:22px;display:grid;grid-template-columns:1fr auto;gap:22px;align-items:end}.hero-bottom p{font-size:clamp(19px,2.1vw,28px);line-height:1.24;letter-spacing:-.04em;max-width:520px;margin:0}.hero-bottom small{font-size:13px;line-height:1.5;color:var(--muted);text-align:right;white-space:nowrap}
+    .feature{background:var(--panel);color:#f2f4f7;padding:30px;display:flex;flex-direction:column;min-height:600px;position:relative;overflow:hidden}.feature-top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--panel-line);padding-bottom:18px;color:#aab0b9}.feature-top .micro{color:#b9c3d5}.feature-index{font-size:13px}.feature-body{margin-top:auto;position:relative;z-index:2}.feature h2{font-size:clamp(44px,4.6vw,74px);line-height:.94;letter-spacing:-.065em;margin:0 0 16px}.feature p{color:#bbc1c9;font-size:17px;line-height:1.55;max-width:400px;margin:0 0 24px}.feature-link{font-size:14px;font-weight:700;border-bottom:1px solid #d3d8e2;padding-bottom:5px;display:inline-flex;gap:25px}.feature-link:hover{color:#8da6ff;border-color:#8da6ff}.pipeline{margin-top:70px;border:1px solid var(--panel-line);padding:24px;display:grid;gap:16px;background:#1c2028}.pipeline-row{display:flex;align-items:center;gap:13px;color:#c5ccd6;font:13px/1.3 Consolas,monospace}.pipeline-row .n{color:#94a8ff}.pipeline-row .bar{height:1px;background:#525c70;flex:1}.pipeline-row strong{font-weight:500;color:#f3f5fa}.pipeline-row:last-child strong{color:#a7b8ff}.feature:after{content:"";position:absolute;top:110px;right:-98px;width:340px;height:340px;border:1px solid #343c4f;border-radius:50%;box-shadow:0 0 0 55px #171a20,0 0 0 56px #343c4f,0 0 0 111px #171a20,0 0 0 112px #343c4f;opacity:.55;pointer-events:none}
+    @media(max-width:900px){.shell{width:min(100% - 36px,1440px)}.site-header{height:68px}.nav{gap:16px}.hero{grid-template-columns:1fr;min-height:auto;padding:42px 0;gap:42px}.hero-copy{min-height:480px}.feature{min-height:520px}h1{font-size:clamp(70px,13vw,120px)}}
+    @media(max-width:560px){.site-header{gap:14px}.nav{gap:14px;font-size:13px}.nav a:nth-child(2){display:none}.header-action{display:none}.hero-copy{min-height:380px}.hero{padding:34px 0;gap:30px}h1{font-size:clamp(64px,18vw,91px);margin-top:45px}.hero-bottom{display:block}.hero-bottom p{font-size:21px}.hero-bottom small{display:block;text-align:left;margin-top:17px}.feature{min-height:540px;padding:22px}.pipeline{padding:17px;margin-top:50px}.feature-body{padding-top:24px}.feature:after{right:-180px}}
+    @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header shell">
+    <a class="brand" href="#top" aria-label="Med Aziz Hraghi, home">MAH<b>.</b></a>
+    <nav class="nav" aria-label="Main navigation"><a href="#work">Work</a><a href="#experience">Experience</a><a href="#about">About</a></nav>
+    <a class="header-action" href="mailto:medazizhraghi@gmail.com">Contact ↗</a>
+  </header>
+  <main id="main" class="shell">
+    <section class="hero" id="top" aria-labelledby="hero-name">
+      <div class="hero-copy">
+        <div class="eyebrow">AI engineering / Tunisia</div>
+        <h1 id="hero-name">Med Aziz<br />Hraghi<span>.</span></h1>
+        <div class="hero-bottom"><p>Building AI systems that can explain what they do.</p><small>ENSTAB student<br />Summer 2026 · Talan Tunisia</small></div>
+      </div>
+      <article class="feature" aria-label="Featured work: UrbanMind">
+        <div class="feature-top"><span class="micro">Featured / Talan Tunisia</span><span class="feature-index">01 — 05</span></div>
+        <div class="pipeline" aria-label="UrbanMind process: public data to analysis to a 3D twin">
+          <div class="pipeline-row"><span class="n">01</span><strong>PUBLIC DATA</strong><span class="bar"></span><span>↗</span></div>
+          <div class="pipeline-row"><span class="n">02</span><strong>CITED ANALYSIS</strong><span class="bar"></span><span>↗</span></div>
+          <div class="pipeline-row"><span class="n">03</span><strong>3D URBAN TWIN</strong><span class="bar"></span><span>●</span></div>
+        </div>
+        <div class="feature-body"><h2>UrbanMind</h2><p>From a plot of land to a reasoned urban proposal. I worked on analysis dashboards and the connection between existing-city data and the 3D twin.</p><a class="feature-link" href="https://github.com/inesCherif/Khatatli_UrbanTwin" target="_blank" rel="noopener noreferrer">Explore the project <span aria-hidden="true">↗</span></a></div>
+      </article>
+    </section>
+    <section id="work" class="section work" aria-labelledby="work-title">
+      <div class="section-heading"><span class="micro">01 / Work</span><h2 id="work-title">Selected work<span class="blue-dot">.</span></h2><p>Five projects. Different domains. The common thread is turning capable models into usable systems.</p></div>
+
+      <article class="case-study" aria-labelledby="urbanmind-title">
+        <div class="case-visual"><img src="assets/urbanmind-live.webp" alt="UrbanMind landing page showing the city's 3D twin and two project paths" loading="lazy" width="1200" height="750" /><div class="case-visual-caption"><span>Live product / UrbanMind</span><span>01</span></div></div>
+        <div class="case-content">
+          <div class="case-kicker"><span>01 / Internship project</span><span>2026</span></div>
+          <h3 id="urbanmind-title">UrbanMind</h3>
+          <p class="case-lede">Urban planning needs more than a map. Our team built a platform that brings terrain data, regulations, feasibility analysis, and a 3D twin into one workflow.</p>
+          <div class="case-facts"><div><span>My contribution</span><p>Analysis dashboards, Python scoring, 3D building footprints, and the existing-city path into the digital twin.</p></div><div><span>Built with</span><p>Python, FastAPI, React, geospatial data, React Three Fiber.</p></div></div>
+          <div class="case-actions"><a href="https://khatatli-urban-twin.vercel.app/" target="_blank" rel="noopener noreferrer">Live product <span aria-hidden="true">↗</span></a><a href="https://github.com/inesCherif/Khatatli_UrbanTwin" target="_blank" rel="noopener noreferrer">Source <span aria-hidden="true">↗</span></a><a href="https://github.com/inesCherif/Khatatli_UrbanTwin/pull/37" target="_blank" rel="noopener noreferrer">A merged contribution <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
+      <div class="project-list" aria-label="More projects">
+        <article class="project" id="syntern">
+          <div class="project-head"><span class="project-number">02</span><span class="project-type">Multi-agent simulation</span></div>
+          <div class="project-main"><div><h3>Syntern</h3><p class="project-one-liner">A first job, before the first job.</p><p>Students practice inside a simulated remote internship: four AI colleagues, a Kanban board, voice calls, and feedback on how they worked.</p></div><div class="project-system" aria-label="Four AI roles in the internship"><span>MANAGER</span><span>TECH LEAD</span><span>CLIENT</span><span>SENIOR INTERN</span></div></div>
+          <div class="project-foot"><span>React / n8n / Supabase / ElevenLabs</span><span>2nd place · TBS Atlas</span><a href="https://github.com/azizhraghi/stagi" target="_blank" rel="noopener noreferrer">See source ↗</a></div>
+        </article>
+        <article class="project" id="groov">
+          <div class="project-head"><span class="project-number">03</span><span class="project-type">Learning / RAG</span></div>
+          <div class="project-main"><div><h3>GROOV</h3><p class="project-one-liner">A study group that argues, explains, and listens.</p><p>Six AI personas teach from uploaded course PDFs. Retrieval keeps answers grounded in source pages; local models and distinct voices make the room feel alive.</p></div><div class="project-flow" aria-label="GROOV process: course PDFs, retrieval, six study personas"><span>COURSE PDF</span><b>→</b><span>RETRIEVAL</span><b>→</b><span>6 PERSONAS</span></div></div>
+          <div class="project-foot"><span>FastAPI / Ollama / FAISS / Edge TTS</span><span>Local-model study room</span><a href="https://github.com/azizhraghi/groov" target="_blank" rel="noopener noreferrer">See source ↗</a></div>
+        </article>
+        <article class="project" id="agentichire">
+          <div class="project-head"><span class="project-number">04</span><span class="project-type">Recruitment / AI agents</span></div>
+          <div class="project-main"><div><h3>AgenticHire</h3><p class="project-one-liner">Two sides of hiring, one working system.</p><p>A team-built platform routes candidates and recruiters into different agent workflows for job matching, CV analysis, and recruitment tasks.</p></div><div class="project-flow" aria-label="AgenticHire connects candidates and recruiters through specialized agents"><span>CANDIDATE</span><b>↔</b><span>12 AGENTS</span><b>↔</b><span>RECRUITER</span></div></div>
+          <div class="project-foot"><span>FastAPI / React / Mistral AI</span><span>3rd place · NerdData ENSI</span><a href="https://github.com/azizhraghi/agentic_hire" target="_blank" rel="noopener noreferrer">See source ↗</a></div>
+        </article>
+        <article class="project" id="vendex">
+          <div class="project-head"><span class="project-number">05</span><span class="project-type">Computer vision / forensics</span></div>
+          <div class="project-main"><div><h3>Vendex</h3><p class="project-one-liner">Evidence first. Verdict second.</p><p>Five forensic layers inspect insurance claim imagery for manipulation and damage; an AI tribunal turns the signals into an explainable verdict.</p></div><div class="project-flow project-flow-dense" aria-label="Vendex forensic methods feed into an explainable verdict"><span>ELA</span><span>FFT</span><span>DINOv2</span><span>MobileSAM</span><b>→</b><span>VERDICT</span></div></div>
+          <div class="project-foot"><span>Python / FastAPI / DINOv2 / MobileSAM</span><span>Top 6 of 37 · GDGC FST</span><a href="https://github.com/azizhraghi/vendex" target="_blank" rel="noopener noreferrer">See source ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="section experience" aria-labelledby="experience-title">
+      <div class="section-heading"><span class="micro">02 / Experience</span><h2 id="experience-title">Where I've worked<span class="blue-dot">.</span></h2></div>
+      <div class="experience-grid"><div class="experience-date">Jul — Aug 2026</div><div><h3>Talan Tunisia</h3><p class="experience-role">AI Engineer Intern · SummerCamp</p><p>Worked with the Bambalouni team on UrbanMind. My work joined analysis and geometry in the backend to the 3D interface, including the existing-city workflow.</p><div class="evidence-links"><a href="https://github.com/inesCherif/Khatatli_UrbanTwin/pull/24" target="_blank" rel="noopener noreferrer">Analysis and 3D work ↗</a><a href="https://github.com/inesCherif/Khatatli_UrbanTwin/pull/37" target="_blank" rel="noopener noreferrer">Existing-city integration ↗</a></div></div></div>
+    </section>
+
+    <section id="about" class="section about" aria-labelledby="about-title">
+      <div class="section-heading"><span class="micro">03 / About</span><h2 id="about-title">Engineer in practice<span class="blue-dot">.</span></h2></div>
+      <div class="about-grid"><div class="about-statement"><p>I'm an engineering student at ENSTAB, specializing in digitalisation and data analysis. I like the difficult middle of AI products: making data usable, choosing where an agent helps, and giving people a clear way to understand the result.</p><p>Outside product work, I chair the ACM ENSTAB Club and help run programming training and contests.</p></div><div class="about-details"><div><h3>Core work</h3><p>Multi-agent systems<br />RAG and information retrieval<br />Computer vision<br />Geospatial analysis</p></div><div><h3>Tools I reach for</h3><p>Python, FastAPI, React<br />PyTorch, Ollama, Mistral AI<br />FAISS, Supabase, n8n</p></div><div><h3>Languages</h3><p>Arabic · native<br />French · fluent<br />English · fluent</p></div></div></div>
+    </section>
+  </main>
+  <footer class="site-footer" id="contact"><div class="shell"><span class="micro">04 / Contact</span><div class="footer-main"><h2>Have something<br />worth building<span>.</span></h2><div><p>Tell me about the problem, the team, or the idea.</p><a class="email-link" href="mailto:medazizhraghi@gmail.com">medazizhraghi@gmail.com ↗</a></div></div><div class="footer-bottom"><span>© 2026 Med Aziz Hraghi</span><div><a href="https://github.com/azizhraghi" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/med-aziz-hraghi/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="assets/Med_Aziz_Hraghi_CV_2026.pdf" download>CV ↓</a></div><a href="#top">Back to top ↑</a></div></div></footer>
+</body>
+</html>
