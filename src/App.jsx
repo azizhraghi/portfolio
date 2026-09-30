@@ -1,7 +1,46 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import {
+  siFastapi, siLanggraph, siLeaflet, siMistralai, siN8n,
+  siOllama, siPython, siQdrant, siReact, siSupabase
+} from 'simple-icons'
 
 const projectOrder = ['urbanmind', 'agentichire', 'groov', 'vendex', 'syntern']
+
+const toolchainLanes = [
+  {
+    label: '01 / ORCHESTRATE',
+    description: 'Agents, retrieval, and local inference',
+    tools: [
+      { name: 'LangGraph', icon: siLanggraph, project: 'UrbanMind', target: 'urbanmind' },
+      { name: 'Qdrant', icon: siQdrant, project: 'UrbanMind', target: 'urbanmind' },
+      { name: 'FAISS', mark: 'F', project: 'GROOV', target: 'groov' },
+      { name: 'Ollama', icon: siOllama, project: 'GROOV', target: 'groov' },
+      { name: 'Mistral AI', icon: siMistralai, project: 'AgenticHire', target: 'agentichire' }
+    ]
+  },
+  {
+    label: '02 / BUILD',
+    description: 'APIs, interfaces, and workflow state',
+    tools: [
+      { name: 'Python', icon: siPython, project: 'UrbanMind', target: 'urbanmind' },
+      { name: 'FastAPI', icon: siFastapi, project: 'AgenticHire', target: 'agentichire' },
+      { name: 'React', icon: siReact, project: 'Syntern', target: 'syntern' },
+      { name: 'Supabase', icon: siSupabase, project: 'Syntern', target: 'syntern' },
+      { name: 'n8n', icon: siN8n, project: 'Syntern', target: 'syntern' }
+    ]
+  },
+  {
+    label: '03 / INTERPRET',
+    description: 'Vision, geometry, and spatial output',
+    tools: [
+      { name: 'DINOv2', mark: 'D2', project: 'Vendex', target: 'vendex' },
+      { name: 'MobileSAM', mark: 'SAM', project: 'Vendex', target: 'vendex' },
+      { name: 'React Three Fiber', mark: '3D', project: 'UrbanMind', target: 'urbanmind' },
+      { name: 'Leaflet', icon: siLeaflet, project: 'UrbanMind', target: 'urbanmind' }
+    ]
+  }
+]
 
 const projects = [
   {
@@ -612,6 +651,61 @@ function Work() {
   )
 }
 
+/* ─── Toolchain ─── */
+function Toolchain() {
+  return (
+    <section className="toolchain-section" id="toolchain" aria-labelledby="toolchain-title">
+      <div className="toolchain-inner">
+        <div className="toolchain-heading">
+          <span className="toolchain-eyebrow">BEHIND THE BUILDS / SELECTED TOOLS</span>
+          <h2 id="toolchain-title">The stack follows<br /><em>the problem.</em></h2>
+          <p>Not a badge collection. These are the tools behind the systems above—each one takes you to a project where it has a job.</p>
+        </div>
+        <div className="toolchain-lanes">
+          {toolchainLanes.map((lane, laneIndex) => (
+            <div className="toolchain-lane" key={lane.label}>
+              <div className="toolchain-lane-info">
+                <span>{lane.label}</span>
+                <p>{lane.description}</p>
+              </div>
+              <div className="toolchain-viewport">
+                <div className={`toolchain-track ${laneIndex % 2 ? 'toolchain-track-reverse' : ''}`}>
+                  {[false, true].map((duplicate) => (
+                    <div className="toolchain-group" key={String(duplicate)} aria-hidden={duplicate ? 'true' : undefined}>
+                      {lane.tools.map((tool, toolIndex) => (
+                        <a
+                          className={`toolchain-item ${tool.icon ? 'toolchain-item--logo' : ''}`}
+                          href={`#${tool.target}`}
+                          key={tool.name}
+                          tabIndex={duplicate ? -1 : undefined}
+                          aria-label={duplicate ? undefined : `${tool.name} in ${tool.project}; view case study`}
+                          style={tool.icon ? {
+                            '--lamp-ink': `#${tool.icon.hex}`,
+                            '--lamp-background': tool.icon.hex === '000000' ? '#f5f6f3' : '#172132',
+                            '--lamp-halo': tool.icon.hex === '000000' ? '#8ea2ff' : `#${tool.icon.hex}`,
+                            '--lamp-delay': `${(laneIndex * 5 + toolIndex) * 0.85}s`
+                          } : undefined}
+                        >
+                          <span className="toolchain-mark" aria-hidden="true">
+                            {tool.icon
+                              ? <svg viewBox="0 0 24 24" focusable="false"><path d={tool.icon.path} fill="currentColor" /></svg>
+                              : tool.mark}
+                          </span>
+                          <span className="toolchain-item-copy"><strong>{tool.name}</strong><small>{tool.project} ↗</small></span>
+                        </a>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── About ─── */
 function About() {
   const reduced = useReducedMotion()
@@ -680,8 +774,8 @@ function About() {
                 <p>Multi-agent systems<br />RAG and retrieval<br />Computer vision<br />Geospatial analysis</p>
               </div>
               <div>
-                <span>TOOLS</span>
-                <p>Python · FastAPI · React<br />PyTorch · Ollama · Mistral AI<br />FAISS · Supabase · n8n</p>
+                <span>APPROACH</span>
+                <p>Ground outputs in sources<br />Keep geometry deterministic<br />Make decisions inspectable</p>
               </div>
             </div>
           </div>
@@ -741,6 +835,7 @@ function App() {
       <main>
         <Hero />
         <Work />
+        <Toolchain />
         <About />
       </main>
       <Contact />
