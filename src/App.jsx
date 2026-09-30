@@ -1,16 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 
+const projectOrder = ['urbanmind', 'agentichire', 'groov', 'vendex', 'syntern']
+
 const projects = [
   {
     id: 'urbanmind', number: '01', name: 'UrbanMind', category: 'Urban intelligence', year: '2026',
-    short: 'From public data to a reasoned urban proposal and a 3D digital twin.',
-    role: 'Analysis dashboards · scoring · 3D building footprints · existing-city integration',
-    stack: 'Python / FastAPI / React / geospatial data / React Three Fiber',
-    source: 'https://github.com/inesCherif/Khatatli_UrbanTwin',
+    short: 'An urban-planning copilot connecting cited regulations, terrain analysis, and a 3D twin.',
+    solution: 'The workspace brings parcel data, cited planning rules, and feasibility analysis together, then turns the proposal into a 2D plan and explorable 3D twin.',
+    decision: 'Agents suggest planning parameters; deterministic geometry handles measurements, layouts, and exports.',
+    status: 'Live product; linked pull requests trace implemented analysis and 3D modules.',
+    stack: 'FastAPI / LangGraph / Qdrant / Mistral / React Three Fiber',
+    source: 'https://github.com/azizhraghi/Khatatli_UrbanTwin',
     live: 'https://khatatli-urban-twin.vercel.app/',
-    detail: 'Our team brought terrain data, regulations, feasibility analysis, and a 3D twin into one urban planning workflow.',
-    noteLabel: 'My contribution',
+    detail: 'Parcel data and planning rules live in separate places, making feasibility slow to assess and difficult to trace back to sources.',
+    context: 'AI Engineer Intern at Talan Tunisia · Bambalouni team',
+    evidence: ['8 legal codes + local PLU', '20 public-data collectors', '2D plans + 3D twin'],
+    demo: { src: '/media/urbanmind-demo.mp4', poster: '/assets/urbanmind-live.webp', label: 'Product walkthrough', duration: '2:21' },
     proof: [
       { label: 'Analysis + 3D work', url: 'https://github.com/inesCherif/Khatatli_UrbanTwin/pull/24' },
       { label: 'Existing-city integration', url: 'https://github.com/inesCherif/Khatatli_UrbanTwin/pull/37' }
@@ -28,12 +34,16 @@ const projects = [
   },
   {
     id: 'syntern', number: '02', name: 'Syntern', category: 'Multi-agent simulation', year: '2026',
-    short: 'A simulated remote internship with four AI colleagues and feedback on the work.',
-    role: 'A team-built training experience · 2nd place at TBS Atlas',
-    stack: 'React / n8n / Supabase / ElevenLabs',
+    short: 'A remote-internship simulation with four AI teammates, deadlines, and behavioral feedback.',
+    solution: 'A simulated team assigns work, responds through distinct AI roles, and reacts to deadlines. The workspace tracks decisions and turns the session into behavioral feedback.',
+    decision: 'n8n controls timed events and escalation; AI personas handle conversations inside the same session.',
+    status: 'Hackathon simulation. Its feedback is formative, not a validated hiring assessment.',
+    stack: 'React / n8n / Supabase / Claude API / ElevenLabs',
     source: 'https://github.com/azizhraghi/stagi',
-    detail: 'Students work through a simulated remote internship with four AI colleagues, a Kanban board, voice calls, and feedback on how they worked.',
-    noteLabel: 'Context',
+    detail: 'Students rarely get to practice remote-team communication and prioritization before their first internship.',
+    context: 'Team project · 2nd place at TBS Atlas',
+    evidence: ['4 AI colleagues', 'Kanban + team messages', 'Behavioral evaluation'],
+    demo: { src: '/media/syntern-demo.mp4', poster: '/media/syntern-poster.jpg', label: 'Simulation walkthrough', duration: '1:39' },
     proof: [],
     nodes: [
       { label: 'STUDENT', x: 78, y: 150 }, { label: 'MANAGER', x: 245, y: 55 },
@@ -49,12 +59,15 @@ const projects = [
   },
   {
     id: 'groov', number: '03', name: 'GROOV', category: 'Learning / RAG', year: '2026',
-    short: 'Six AI study personas teach from uploaded course PDFs, grounded in retrieved pages.',
-    role: 'Local-model study room with distinct voices',
-    stack: 'FastAPI / Ollama / FAISS / Edge TTS',
+    short: 'A local-AI study room that grounds a six-persona discussion in course PDFs.',
+    solution: 'Course PDFs become searchable passages; a local model uses retrieved context to run a six-persona discussion, with spoken responses for a more interactive study session.',
+    decision: 'FAISS retrieves source passages before Ollama responds; the study session keeps separate persona prompts and conversation history.',
+    status: 'Runs locally with Ollama. Public source is available; a browser demo is not yet published.',
+    stack: 'FastAPI / Ollama / FAISS / Sentence Transformers / Edge TTS',
     source: 'https://github.com/azizhraghi/groov',
-    detail: 'Uploaded course PDFs become a study room. Retrieval keeps answers grounded in source pages, while six personas and distinct voices make the discussion feel alive.',
-    noteLabel: 'Approach',
+    detail: 'Long course PDFs are hard to study alone, and generic AI explanations can lose the source material they should be grounded in.',
+    context: 'Independent project · local-model architecture',
+    evidence: ['PDF-grounded retrieval', 'Local Ollama inference', 'Six teaching personas'],
     proof: [],
     nodes: [
       { label: 'COURSE PDF', x: 80, y: 150 }, { label: 'RETRIEVAL', x: 255, y: 150 },
@@ -69,12 +82,16 @@ const projects = [
   },
   {
     id: 'agentichire', number: '04', name: 'AgenticHire', category: 'Recruitment / agents', year: '2026',
-    short: 'Two sides of hiring routed through specialized agent workflows.',
-    role: 'Team platform · 3rd place at NerdData ENSI',
-    stack: 'FastAPI / React / Mistral AI',
+    short: 'A chat-first hiring platform for candidate and recruiter workflows.',
+    solution: 'A role-aware chat orchestrator connects CV analysis, job discovery, fit assessment, and interview preparation for candidates, with separate recruiter-facing workflows.',
+    decision: 'Candidate and recruiter requests follow separate specialist-agent routes instead of one general-purpose chat prompt.',
+    status: 'Recorded prototype with public source, not a hosted service.',
+    stack: 'FastAPI / React / Mistral AI / SQLite',
     source: 'https://github.com/azizhraghi/agentic_hire',
-    detail: 'A team-built platform routes candidates and recruiters into different workflows for matching, CV analysis, and recruitment tasks.',
-    noteLabel: 'Context',
+    detail: 'Candidates and recruiters move between CV review, job boards, matching, and follow-up without one coherent decision trail.',
+    context: 'Two-person project · 3rd place at NerdData ENSIT',
+    evidence: ['Candidate + recruiter paths', 'Multi-source job search', 'CV-to-job matching'],
+    demo: { src: '/media/agentichire-highlights.mp4', poster: '/media/agentichire-poster.jpg', label: 'Workflow highlights', duration: '1:08' },
     proof: [],
     nodes: [
       { label: 'CANDIDATE', x: 80, y: 90 }, { label: 'RECRUITER', x: 80, y: 210 },
@@ -89,12 +106,16 @@ const projects = [
   },
   {
     id: 'vendex', number: '05', name: 'Vendex', category: 'Vision / forensics', year: '2026',
-    short: 'Five forensic layers turn insurance claim imagery into an explainable verdict.',
-    role: 'Team project · top 6 of 37 at GDGC FST',
-    stack: 'Python / FastAPI / DINOv2 / MobileSAM',
+    short: 'Image-forensic signals and damage analysis combined into an explainable claim assessment.',
+    solution: 'The pipeline checks image integrity, identifies unusual visual patterns, maps vehicle damage, and combines those signals into an explainable claim assessment and PDF report.',
+    decision: 'ELA, FFT, DINOv2, and MobileSAM remain separate evidence streams before the reasoning layer summarizes them.',
+    status: 'Hackathon prototype for triage; no validated fraud-detection accuracy or autonomous claim decision is claimed.',
+    stack: 'FastAPI / DINOv2 / MobileSAM / Mistral AI',
     source: 'https://github.com/azizhraghi/vendex',
-    detail: 'ELA, FFT, DINOv2, and MobileSAM inspect claims for manipulation and damage. An AI tribunal turns the signals into an explainable verdict.',
-    noteLabel: 'Context',
+    detail: 'A single claim photo gives an assessor little visibility into possible edits, image provenance, or the location of physical damage.',
+    context: 'Team project · top 6 of 37 at GDGC FST',
+    evidence: ['ELA + FFT checks', 'DINOv2 + MobileSAM', 'Explainable PDF report'],
+    demo: { src: '/media/vendex-demo.mp4', poster: '/media/vendex-poster.jpg', label: 'Claim analysis walkthrough', duration: '3:09' },
     proof: [],
     nodes: [
       { label: 'CLAIM IMAGE', x: 78, y: 150 }, { label: 'ELA', x: 245, y: 55 },
@@ -108,7 +129,8 @@ const projects = [
       { title: 'Explain the verdict', modules: ['Mistral tribunal', 'Three perspectives', 'PDF report'], detail: 'Three AI roles interpret the forensic signals and produce an explainable insurance verdict and report.' }
     ]
   }
-]
+].sort((a, b) => projectOrder.indexOf(a.id) - projectOrder.indexOf(b.id))
+  .map((project, index) => ({ ...project, number: String(index + 1).padStart(2, '0') }))
 
 /* ─── Cursor Glow ─── */
 function CursorGlow() {
@@ -284,7 +306,7 @@ function MobileMenu({ open, onClose }) {
         transition={{ duration: 0.3, delay: open ? 0.15 : 0 }}
       >Contact</motion.a>
       <motion.a
-        href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download className="mobile-cv"
+        href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf" className="mobile-cv"
         initial={false} animate={open ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.3, delay: open ? 0.2 : 0 }}
       >Download CV ↗</motion.a>
@@ -305,7 +327,7 @@ function Header() {
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
-        <a className="header-cv" href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download>Download CV <span aria-hidden="true">↗</span></a>
+        <a className="header-cv" href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf">Download CV <span aria-hidden="true">↗</span></a>
         <button
           className="menu-toggle"
           onClick={() => setMenuOpen(v => !v)}
@@ -362,7 +384,7 @@ function Hero() {
             initial={reduced ? false : { opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25 }}
-          >AI systems with<br />a human interface.</motion.p>
+          >Agents, retrieval, vision.<br />Built for real workflows.</motion.p>
           <motion.h1
             id="name"
             initial={reduced ? false : { opacity: 0, y: 38 }}
@@ -445,6 +467,13 @@ function Hero() {
 /* ─── Case Study ─── */
 function CaseStudy({ project, index }) {
   const reduced = useReducedMotion()
+  const [isPlaying, setIsPlaying] = useState(false)
+  const artRef = useRef(null)
+
+  function playDemo() {
+    setIsPlaying(true)
+    artRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' })
+  }
 
   return (
     <motion.article
@@ -460,9 +489,23 @@ function CaseStudy({ project, index }) {
         <span>{project.year}</span>
       </div>
       <div className="case-layout">
-        <div className="case-art">
-          {project.id === 'urbanmind'
-            ? <img src="/assets/urbanmind-live.webp" width="1200" height="750" alt="UrbanMind live product landing page" loading="lazy" />
+        <div className="case-art" ref={artRef}>
+          {project.demo
+            ? isPlaying
+              ? <div className="case-video-playing">
+                  <video controls autoPlay playsInline preload="metadata" poster={project.demo.poster} aria-label={`${project.name} ${project.demo.label}`}>
+                    <source src={project.demo.src} type="video/mp4" />
+                    Your browser cannot play this video.
+                  </video>
+                  <button type="button" className="case-video-close" onClick={() => setIsPlaying(false)} aria-label={`Close ${project.name} video`}>Close video</button>
+                </div>
+              : <button type="button" className="case-video-preview" onClick={playDemo} aria-label={`Play ${project.name} ${project.demo.label}, ${project.demo.duration}`}>
+                  <img src={project.demo.poster} alt="" loading="lazy" />
+                  <span className="case-video-overlay" aria-hidden="true">
+                    <span className="case-video-play">▶</span>
+                    <span><strong>{project.demo.label}</strong><small>{project.demo.duration} · Play video</small></span>
+                  </span>
+                </button>
             : <div className="case-graph">
                 <span className="visual-heading">SIMPLIFIED PROJECT FLOW / {project.number}</span>
                 <SystemGraph project={project} reduced={reduced} />
@@ -474,11 +517,22 @@ function CaseStudy({ project, index }) {
           <span className="case-eyebrow">SELECTED WORK / {project.number}</span>
           <h3>{project.name}</h3>
           <p className="case-lede">{project.short}</p>
-          <p className="case-detail">{project.detail}</p>
+          <ul className="case-evidence" aria-label={`${project.name} at a glance`}>
+            {project.evidence.map(item => <li key={item}>{item}</li>)}
+          </ul>
+          <div className="case-story">
+            <div><span>The problem</span><p>{project.detail}</p></div>
+            <div><span>The solution</span><p>{project.solution}</p></div>
+            <div><span>Design choice</span><p>{project.decision}</p></div>
+          </div>
           <div className="case-meta">
             <div>
-              <span>{project.noteLabel}</span>
-              <p>{project.role}</p>
+              <span>Context</span>
+              <p>{project.context}</p>
+            </div>
+            <div>
+              <span>Scope</span>
+              <p>{project.status}</p>
             </div>
             <div>
               <span>Built with</span>
@@ -486,13 +540,18 @@ function CaseStudy({ project, index }) {
             </div>
           </div>
           <div className="case-links">
+            <span className="case-links-label">VERIFY THE BUILD</span>
+            {project.demo && <button type="button" onClick={playDemo}>Watch {project.demo.label.toLowerCase()}</button>}
             {project.live && <a href={project.live} target="_blank" rel="noopener noreferrer">Live product ↗</a>}
-            <a href={project.source} target="_blank" rel="noopener noreferrer">Source ↗</a>
+            <a href={project.source} target="_blank" rel="noopener noreferrer">GitHub source ↗</a>
             {project.proof.map(item => <a key={item.label} href={item.url} target="_blank" rel="noopener noreferrer">{item.label} ↗</a>)}
           </div>
         </div>
       </div>
-      <ArchitecturePanel project={project} />
+      <details className="architecture-disclosure">
+        <summary><span>Explore {project.name} architecture</span><span>FOUR SYSTEM LAYERS <b aria-hidden="true">+</b></span></summary>
+        <ArchitecturePanel project={project} />
+      </details>
     </motion.article>
   )
 }
@@ -512,8 +571,40 @@ function Work() {
       >
         <span>01 / SELECTED WORK</span>
         <h2 id="work-title">Systems built<br />to do something<span>.</span></h2>
-        <p>Five projects across cities, learning, work, hiring, and visual evidence. Each one starts with a real task, not just a model.</p>
+        <p>Start with the working artifacts. Then inspect the decisions and source behind each system.</p>
       </motion.div>
+      <div className="proof-index" id="proof" aria-label="Quick paths to project evidence">
+        <div className="proof-index-heading">
+          <span>FOR A QUICK REVIEW</span>
+          <strong>Proof before pitch.</strong>
+        </div>
+        <div className="proof-index-items">
+          <div>
+            <span>LIVE APPLICATION</span>
+            <strong>UrbanMind</strong>
+            <p>Parcel-to-plan workflow, with implementation pull requests in the case study.</p>
+            <a href="https://khatatli-urban-twin.vercel.app/" target="_blank" rel="noopener noreferrer">Open application ↗</a>
+          </div>
+          <div>
+            <span>1:08 RECORDED DEMO</span>
+            <strong>AgenticHire</strong>
+            <p>Candidate and recruiter paths, including CV-to-job matching.</p>
+            <a href="/media/agentichire-highlights.mp4" target="_blank" rel="noopener noreferrer">Watch workflow ↗</a>
+          </div>
+          <div>
+            <span>3:09 RECORDED DEMO</span>
+            <strong>Vendex</strong>
+            <p>Claim image through separate forensic signals to an explainable report.</p>
+            <a href="/media/vendex-demo.mp4" target="_blank" rel="noopener noreferrer">Watch analysis ↗</a>
+          </div>
+          <div>
+            <span>PUBLIC REPOSITORY</span>
+            <strong>INAT / LSTE</strong>
+            <p>Research monitoring and reviewed parcel-water decision support prototype.</p>
+            <a href="https://github.com/azizhraghi/lab_research" target="_blank" rel="noopener noreferrer">Inspect source ↗</a>
+          </div>
+        </div>
+      </div>
       <div className="cases">
         {projects.map((project, index) => <CaseStudy key={project.id} project={project} index={index} />)}
       </div>
@@ -549,6 +640,25 @@ function About() {
             </div>
           </div>
         </motion.div>
+        <motion.div
+          className="experience-content experience-secondary"
+          initial={reduced ? false : { opacity: 0.5, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div>
+            <span>JUL — AUG 2026 · REMOTE</span>
+            <h2>INAT<span>.</span></h2>
+          </div>
+          <div>
+            <p className="experience-role">Applied AI Intern · LSTE</p>
+            <p>I built research-monitoring workflows across ArXiv, PubMed, and Scopus, using semantic retrieval and deduplication. I also worked on a parcel-water decision-support prototype that combines reviewed field data with water-balance scenarios. Field validation remains to be done.</p>
+            <div className="experience-links">
+              <a href="https://github.com/azizhraghi/lab_research" target="_blank" rel="noopener noreferrer">Explore the research platform ↗</a>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       <section className="about-section" id="about" aria-labelledby="about-title">
@@ -563,7 +673,7 @@ function About() {
           <h2 id="about-title">Engineer<br />in practice<span>.</span></h2>
           <div>
             <p>I'm an engineering student at ENSTAB, specializing in digitalisation and data analysis. I like the difficult middle of AI products: making data usable, choosing where agents help, and giving people a clear way to understand the result.</p>
-            <p>Outside product work, I chair the ACM ENSTAB Club and help run programming training and contests.</p>
+            <p>Outside product work, I chaired the ACM ENSTAB Club and helped run programming training and contests.</p>
             <div className="about-columns">
               <div>
                 <span>CORE WORK</span>
@@ -608,8 +718,8 @@ function Contact() {
         <span>© 2026 MED AZIZ HRAGHI</span>
         <div>
           <a href="https://github.com/azizhraghi" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
-          <a href="https://www.linkedin.com/in/med-aziz-hraghi/" target="_blank" rel="noopener noreferrer">LINKEDIN ↗</a>
-          <a href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download>CV ↓</a>
+          <a href="https://www.linkedin.com/in/med-aziz-hraghi-b45a04248/" target="_blank" rel="noopener noreferrer">LINKEDIN ↗</a>
+          <a href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf">CV ↓</a>
         </div>
         <a href="#top">BACK TO TOP ↑</a>
       </div>
