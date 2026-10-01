@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import {
   siFastapi, siLanggraph, siLeaflet, siMistralai, siN8n,
-  siOllama, siPython, siQdrant, siReact, siSupabase
+  siOllama, siPython, siQdrant, siReact, siSupabase, siTypescript
 } from 'simple-icons'
 
 const projectOrder = ['urbanmind', 'agentichire', 'groov', 'vendex', 'syntern']
@@ -26,6 +26,7 @@ const toolchainLanes = [
       { name: 'Python', icon: siPython, project: 'UrbanMind', target: 'urbanmind' },
       { name: 'FastAPI', icon: siFastapi, project: 'AgenticHire', target: 'agentichire' },
       { name: 'React', icon: siReact, project: 'Syntern', target: 'syntern' },
+      { name: 'TypeScript', icon: siTypescript, project: 'UrbanMind', target: 'urbanmind' },
       { name: 'Supabase', icon: siSupabase, project: 'Syntern', target: 'syntern' },
       { name: 'n8n', icon: siN8n, project: 'Syntern', target: 'syntern' }
     ]
@@ -49,7 +50,7 @@ const projects = [
     solution: 'The workspace brings parcel data, cited planning rules, and feasibility analysis together, then turns the proposal into a 2D plan and explorable 3D twin.',
     decision: 'Agents suggest planning parameters; deterministic geometry handles measurements, layouts, and exports.',
     status: 'Live product; linked pull requests trace implemented analysis and 3D modules.',
-    stack: 'FastAPI / LangGraph / Qdrant / Mistral / React Three Fiber',
+    stack: 'FastAPI / LangGraph / Qdrant / Mistral / React + TypeScript / React Three Fiber',
     source: 'https://github.com/azizhraghi/Khatatli_UrbanTwin',
     live: 'https://khatatli-urban-twin.vercel.app/',
     detail: 'Parcel data and planning rules live in separate places, making feasibility slow to assess and difficult to trace back to sources.',
