@@ -131,7 +131,7 @@ const projects = [
     detail: 'Candidates and recruiters move between CV review, job boards, matching, and follow-up without one coherent decision trail.',
     context: 'Two-person project · 3rd place at NerdData ENSIT',
     evidence: ['Candidate + recruiter paths', 'Multi-source job search', 'CV-to-job matching'],
-    demo: { src: '/media/agentichire-highlights.mp4', poster: '/media/agentichire-poster.jpg', label: 'Workflow highlights', duration: '1:08' },
+    demo: { src: '/media/agentichire-highlights.mp4', poster: '/media/agentichire-poster.jpg', label: 'Full workflow demo', duration: '3:57' },
     proof: [],
     nodes: [
       { label: 'CANDIDATE', x: 80, y: 90 }, { label: 'RECRUITER', x: 80, y: 210 },
@@ -599,6 +599,7 @@ function CaseStudy({ project, index }) {
 /* ─── Work ─── */
 function Work() {
   const reduced = useReducedMotion()
+  const agenticHire = projects.find(project => project.id === 'agentichire')
 
   return (
     <section className="work-section" id="work" aria-labelledby="work-title">
@@ -626,10 +627,10 @@ function Work() {
             <a href="https://khatatli-urban-twin.vercel.app/" target="_blank" rel="noopener noreferrer">Open application ↗</a>
           </div>
           <div>
-            <span>1:08 RECORDED DEMO</span>
+            <span>{agenticHire.demo.duration} RECORDED DEMO</span>
             <strong>AgenticHire</strong>
             <p>Candidate and recruiter paths, including CV-to-job matching.</p>
-            <a href="/media/agentichire-highlights.mp4" target="_blank" rel="noopener noreferrer">Watch workflow ↗</a>
+            <a href={agenticHire.demo.src} target="_blank" rel="noopener noreferrer">Watch full demo ↗</a>
           </div>
           <div>
             <span>3:09 RECORDED DEMO</span>
