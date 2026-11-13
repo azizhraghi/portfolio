@@ -1,11 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { useState, useEffect, useRef, useCallback, useId } from 'react'
+import { AnimatePresence, motion, useReducedMotion, useScroll } from 'motion/react'
+import HelloAziz from './HelloAziz.jsx'
+import BrandMark from './BrandMark.jsx'
 import {
   siFastapi, siLanggraph, siLeaflet, siMistralai, siN8n,
   siOllama, siPython, siQdrant, siReact, siSupabase, siTypescript
 } from 'simple-icons'
 
-const projectOrder = ['urbanmind', 'agentichire', 'groov', 'vendex', 'syntern']
+const projectOrder = ['urbanmind', 'agentichire', 'vendex', 'syntern', 'groov']
+const cvUrl = '/assets/Med_Aziz_Hraghi_CV_2026.pdf'
 
 const toolchainLanes = [
   {
@@ -211,45 +214,33 @@ function CursorGlow() {
   return <div ref={ref} className="cursor-glow" aria-hidden="true" />
 }
 
-/* ─── Loading Screen ─── */
 function LoadingScreen() {
   const [visible, setVisible] = useState(true)
   const reduced = useReducedMotion()
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), reduced ? 0 : 900)
+    if (reduced) return
+    const timer = setTimeout(() => setVisible(false), 760)
     return () => clearTimeout(timer)
   }, [reduced])
 
+  if (reduced) return null
   return (
     <AnimatePresence>
-      {visible && (
-        <motion.div
-          className="loading-screen"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.45, ease: 'easeInOut' }}
-        >
-          <motion.div
-            className="loading-logo"
-            initial={reduced ? false : { opacity: 0, scale: 0.88 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.2, 0.7, 0.2, 1] }}
-          >
-            MAH<span>·</span>
-          </motion.div>
-        </motion.div>
-      )}
+      {visible && <motion.div className="loading-screen" aria-hidden="true"
+        exit={{ opacity: 0 }} transition={{ duration: .3 }}>
+        <BrandMark animate />
+      </motion.div>}
     </AnimatePresence>
   )
 }
 
-/* ─── System Graph (unchanged) ─── */
 function SystemGraph({ project, reduced }) {
+  const gridId = useId()
   return (
     <svg className="system-graph" viewBox="0 0 540 300" role="img" aria-label={`${project.name} system flow: ${project.nodes.map(node => node.label).join(', ')}`}>
-      <defs><pattern id={`grid-${project.id}`} width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" fill="none" stroke="#242d3b" strokeWidth="1" /></pattern></defs>
-      <rect width="540" height="300" fill={`url(#grid-${project.id})`} />
+      <defs><pattern id={gridId} width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" fill="none" stroke="#242d3b" strokeWidth="1" /></pattern></defs>
+      <rect width="540" height="300" fill={`url(#${gridId})`} />
       {project.edges.map(([from, to], index) => (
         <motion.line key={`${from}-${to}`} x1={project.nodes[from].x} y1={project.nodes[from].y} x2={project.nodes[to].x} y2={project.nodes[to].y}
           stroke="#52647f" strokeWidth="1.5" initial={reduced ? false : { pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ duration: .5, delay: index * .06 }} />
@@ -274,7 +265,7 @@ function ArchitecturePanel({ project }) {
     <section className="architecture-panel" aria-label={`${project.name} system architecture`}>
       <div className="architecture-heading">
         <div>
-          <span className="architecture-kicker">SYSTEM ANATOMY / {project.number}</span>
+          <span className="architecture-kicker">SYSTEM ANATOMY</span>
           <h4>How {project.name} works<span>.</span></h4>
         </div>
         <span className="architecture-count">0{activeIndex + 1} / 04</span>
@@ -336,6 +327,11 @@ function MobileMenu({ open, onClose }) {
         transition={{ duration: 0.3, delay: open ? 0.05 : 0 }}
       >Work</motion.a>
       <motion.a
+        href="#experience" onClick={onClose}
+        initial={false} animate={open ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.3, delay: open ? 0.08 : 0 }}
+      >Experience</motion.a>
+      <motion.a
         href="#about" onClick={onClose}
         initial={false} animate={open ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.3, delay: open ? 0.1 : 0 }}
@@ -346,7 +342,7 @@ function MobileMenu({ open, onClose }) {
         transition={{ duration: 0.3, delay: open ? 0.15 : 0 }}
       >Contact</motion.a>
       <motion.a
-        href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf" className="mobile-cv"
+        href={cvUrl} download="HraghiMedAziz_CV.pdf" className="mobile-cv"
         initial={false} animate={open ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.3, delay: open ? 0.2 : 0 }}
       >Download CV ↗</motion.a>
@@ -360,14 +356,15 @@ function Header() {
 
   return (
     <>
-      <header className="header" id="top">
-        <a className="logo" href="#top" aria-label="Med Aziz Hraghi, home">MAH<span>·</span></a>
+      <header className={menuOpen ? 'header header-menu-open' : 'header'} id="top">
+        <a className="logo" href="#top" aria-label="Med Aziz Hraghi, home"><BrandMark /></a>
         <nav aria-label="Main navigation">
           <a href="#work">Work</a>
+          <a href="#experience">Experience</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
-        <a className="header-cv" href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf">Download CV <span aria-hidden="true">↗</span></a>
+        <a className="header-cv" href={cvUrl} download="HraghiMedAziz_CV.pdf">Download CV <span aria-hidden="true">↗</span></a>
         <button
           className="menu-toggle"
           onClick={() => setMenuOpen(v => !v)}
@@ -387,267 +384,369 @@ function Header() {
   )
 }
 
-/* ─── Hero ─── */
-function Hero() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const reduced = useReducedMotion()
-  const { scrollY } = useScroll()
-  const photoY = useTransform(scrollY, [0, 700], [0, 38])
-  const active = projects[activeIndex]
+const surgiguardProject = {
+  id: 'surgiguard', name: 'SurgiGuard AI', category: 'Wearables / recovery', year: '2026',
+  short: 'A hackathon prototype connecting wearable readings to a recovery dashboard and simulated care-team alerts.',
+  context: '2nd place at HackCure 2026 · Team project',
+  stack: 'ESP32 / MQTT / .NET / MongoDB / FastAPI / LangGraph',
+  detail: 'Recovery at home leaves patients and caregivers piecing together symptoms, sensor readings, and discharge documents.',
+  solution: 'Wearable telemetry, recovery plans, and review workflows come together in a shared prototype.',
+  decision: 'Rules handle urgent escalation. AI assists with document retrieval and investigation.',
+  status: 'Hackathon prototype using a fictional patient and simulated notifications.',
+  evidence: ['ESP32 + MQTT', 'Rules-based escalation', '2nd place · HackCure'],
+  demo: { src: '/media/surgiguard-demo.mp4', poster: '/media/surgiguard-poster.jpg', label: 'Mobile app and wearable demo', duration: '2:33' },
+  proof: [],
+  nodes: [
+    { label: 'WEARABLE', x: 70, y: 150 }, { label: 'MQTT + API', x: 250, y: 80 },
+    { label: 'AI REVIEW', x: 250, y: 220 }, { label: 'CARE TEAM', x: 450, y: 150 }
+  ],
+  edges: [[0, 1], [1, 2], [2, 3]],
+  architecture: [
+    { title: 'Read', modules: ['ESP32', 'Heart rate + SpO2', 'Motion + temperature'], detail: 'The wearable collects readings for the recovery workflow.' },
+    { title: 'Ingest', modules: ['MQTT', '.NET API', 'MongoDB'], detail: 'The API stores telemetry and patient data.' },
+    { title: 'Review', modules: ['FastAPI', 'LangGraph', 'Urgent rules'], detail: 'Rules and agent workflows review incoming data.' },
+    { title: 'Follow up', modules: ['Recovery plan', 'Care-team review', 'Simulated alert'], detail: 'The prototype presents information for follow-up.' }
+  ]
+}
+const portfolioProjects = [...projects, surgiguardProject]
+const decisionTitles = {
+  urbanmind: 'Let the model propose. Let geometry calculate.',
+  agentichire: 'Give each hiring role its own route.',
+  vendex: 'Keep the evidence visible.',
+  syntern: 'Put the scenario clock in the workflow.',
+  groov: 'Bring the source material into the conversation.',
+  surgiguard: 'Keep escalation rules explicit.'
+}
 
-  function handleKeyDown(event, index) {
-    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return
-    event.preventDefault()
-    const next = (index + (event.key === 'ArrowDown' ? 1 : -1) + projects.length) % projects.length
-    setActiveIndex(next)
-    event.currentTarget.parentElement.querySelectorAll('button')[next]?.focus()
+const buildStories = {
+  vendex: {
+    title: 'Five hours to make the pieces work together.',
+    text: 'Our individual parts were working. When I brought them together, the system broke. I spent five hours, from 3:00 to 8:00, getting the integrated workflow working again.'
+  },
+  syntern: {
+    title: 'We started Syntern at midnight.',
+    text: 'We had been working on another idea before changing direction. We only started building Syntern at midnight, kept working through the remaining time, and finished in second place.'
+  },
+  agentichire: {
+    title: 'LinkedIn was the source I struggled to connect.',
+    text: 'The job search starts from the candidate’s CV and spans 11 platforms. LinkedIn scraping was the part I wasn’t sure I could get working. I kept working on it and eventually got it into the pipeline.'
   }
+}
 
+const projectMoments = {
+  agentichire: {
+    src: '/assets/moments/nerddata-team.png',
+    alt: 'AgenticHire teammates seated with their laptops at the NerdData hackathon',
+    caption: 'NerdData · ENSIT', result: '3rd place', label: 'AT THE BUILD TABLE'
+  },
+  syntern: {
+    src: '/assets/moments/atlas-award.png',
+    alt: 'The group on stage at the Atlas hackathon at TBS',
+    caption: 'Atlas Hackathon · TBS', result: '2nd place', label: 'AFTER THE LAST PIVOT'
+  },
+  surgiguard: {
+    src: '/assets/moments/hackcure-award.png',
+    alt: 'SurgiGuard’s team with certificates and the prize cheque at HackCure',
+    caption: 'HackCure · SurgiGuard', result: '2nd place', label: 'A TEAM EFFORT'
+  }
+}
+
+const urbanMindFrames = [
+  {
+    title: 'Define the site',
+    image: '/assets/urbanmind-parcel.jpg',
+    alt: 'UrbanMind site diagnostic with the boundary outlined on a map',
+    caption: 'The boundary defines where to collect terrain and neighborhood data.'
+  },
+  {
+    title: 'Check the planning rules',
+    image: '/assets/urbanmind-rules.jpg',
+    alt: 'UrbanMind zoning rules with a warning about incomplete source pages',
+    caption: 'The planning view flags missing source pages so gaps are visible before design begins.'
+  },
+  {
+    title: 'Inspect the 3D result',
+    image: '/assets/urbanmind-twin.jpg',
+    alt: 'UrbanMind 3D neighborhood with a selected building and its measurements',
+    caption: 'Select a building in the 3D twin to inspect its height, footprint, and terrain elevation.'
+  }
+]
+
+function UrbanMindDecision({ project }) {
   return (
-    <section className="hero" aria-labelledby="name">
-      <div className="identity-panel">
-        <motion.img
-          src="/assets/med-aziz-portrait.jpg" width="1024" height="1536"
-          alt="Med Aziz Hraghi smiling in a black shirt" fetchPriority="high"
-          style={reduced ? undefined : { y: photoY }}
-          initial={reduced ? false : { opacity: 0.5, scale: 1.08 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, ease: [0.2, 0.7, 0.2, 1] }}
-        />
-        <div className="identity-shade" />
-        <div className="identity-top">
-          <span>AI ENGINEER</span>
-          <span>TUNISIA / 2026</span>
+    <section className="urban-case" aria-labelledby="urban-decision-title">
+      <h3 id="urban-decision-title">Which decisions belong to the AI?</h3>
+      <div className="urban-case-notes">
+        <div>
+          <h4>Agents propose the design</h4>
+          <p>The agents suggest planning parameters for the proposal. The geometry code uses those parameters to generate layouts and compute measurements.</p>
         </div>
-        <div className="identity-bottom">
-          <motion.p
-            initial={reduced ? false : { opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
-          >Agents, retrieval, vision.<br />Built for real workflows.</motion.p>
-          <motion.h1
-            id="name"
-            initial={reduced ? false : { opacity: 0, y: 38 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.36 }}
-          >MED AZIZ<br />HRAGHI<span>.</span></motion.h1>
+        <div>
+          <h4>Geometry measures it</h4>
+          <p>The height used for the planning check is measured from the lowest point of the natural terrain under the building footprint. On a slope, that measurement can exceed the building’s height.</p>
         </div>
       </div>
-
-      <div className="explorer">
-        <div className="explorer-top">
-          <span>SELECTED SYSTEMS</span>
-          <span>01 — 05</span>
-        </div>
-        <div className="explorer-main">
-          <div className="system-list" aria-label="Choose a project">
-            {projects.map((project, index) => (
-              <button
-                key={project.id} type="button"
-                className={activeIndex === index ? 'system-choice active' : 'system-choice'}
-                onClick={() => setActiveIndex(index)}
-                onPointerEnter={event => { if (event.pointerType === 'mouse') setActiveIndex(index) }}
-                onKeyDown={event => handleKeyDown(event, index)}
-                aria-pressed={activeIndex === index}
-              >
-                {activeIndex === index && <motion.span className="active-rail" layoutId="active-rail" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
-                <span className="choice-number">{project.number}</span>
-                <span className="choice-name">{project.name}</span>
-                <span className="choice-arrow" aria-hidden="true">↗</span>
-              </button>
-            ))}
-          </div>
-          <div className="graph-stage">
-            <div className="graph-top">
-              <span>SYSTEM MAP</span>
-              <span>{active.number} / 05</span>
-            </div>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={active.id}
-                initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reduced ? { opacity: 0 } : { opacity: 0, y: -18 }}
-                transition={{ duration: reduced ? 0.1 : 0.32 }}
-              >
-                <SystemGraph project={active} reduced={reduced} />
-              </motion.div>
-            </AnimatePresence>
-            <span className="graph-foot">SIMPLIFIED PROJECT FLOW / SELECT A SYSTEM</span>
-          </div>
-        </div>
-
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={active.id} className="system-summary"
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -16 }}
-            transition={{ duration: reduced ? 0.1 : 0.3 }}
-            aria-live="polite"
-          >
-            <div>
-              <span className="summary-label">{active.category} / {active.year}</span>
-              <h2>{active.name}</h2>
-              <p>{active.short}</p>
-            </div>
-            <a href={`#${active.id}`} className="summary-link">Explore case <span aria-hidden="true">↘</span></a>
-          </motion.div>
-        </AnimatePresence>
-
-        <div className="explorer-bottom">
-          <span>BUILD / TEST / EXPLAIN</span>
-          <a href="#work">SCROLL TO WORK ↓</a>
-        </div>
+      <figure className="urban-evidence">
+        <a href={urbanMindFrames[2].image} target="_blank" rel="noopener noreferrer" aria-label="Open full UrbanMind building measurement screenshot">
+          <img src={urbanMindFrames[2].image} alt={urbanMindFrames[2].alt} width="1440" height="810" loading="lazy" />
+          <span className="urban-measurement-outline" aria-hidden="true" />
+          <span className="moment-expand" aria-hidden="true">↗</span>
+        </a>
+        <figcaption>
+          <h4>One building on sloped terrain</h4>
+          <dl>
+            <div><dt>Building height</dt><dd>21.1 m</dd></div>
+            <div><dt>Height for the planning check</dt><dd>26.7 m</dd></div>
+            <div><dt>Difference due to slope</dt><dd>5.6 m</dd></div>
+          </dl>
+          <p>The demo shows both measurements for the same existing residential building.</p>
+        </figcaption>
+      </figure>
+      <div className="urban-contribution">
+        <h4>My contribution at Talan</h4>
+        <p>I worked with the Bambalouni team on terrain analysis and the 3D workflow, including how UrbanMind handles existing neighborhoods.</p>
+        <div className="index-links">{project.proof.map(item => (
+          <a key={item.label} href={item.url} target="_blank" rel="noopener noreferrer">{item.label} PR ↗</a>
+        ))}</div>
       </div>
     </section>
   )
 }
 
-/* ─── Case Study ─── */
-function CaseStudy({ project, index }) {
-  const reduced = useReducedMotion()
-  const [isPlaying, setIsPlaying] = useState(false)
-  const artRef = useRef(null)
+function UrbanMindWalkthrough() {
+  return (
+    <div className="urban-case">
+      <ol className="urban-case-frames" aria-label="UrbanMind workflow">
+        {urbanMindFrames.map((frame, index) => (
+          <li key={frame.title}>
+            <a href={frame.image} target="_blank" rel="noopener noreferrer" aria-label={`View full screenshot: ${frame.title}`}>
+              <img src={frame.image} alt={frame.alt} width="1440" height="810" loading="lazy" />
+              <span className="moment-expand" aria-hidden="true">↗</span>
+            </a>
+            <div className="urban-frame-caption">
+              <span aria-hidden="true">0{index + 1}</span>
+              <div><h4>{frame.title}</h4><p>{frame.caption}</p></div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
 
-  function playDemo() {
-    setIsPlaying(true)
-    artRef.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' })
-  }
+function ProjectDisplay({ project, color }) {
+  const reduced = useReducedMotion()
+  const [playing, setPlaying] = useState(false)
+  const flagship = project.id === 'urbanmind'
+  const Heading = flagship ? 'h2' : 'h3'
+  const headingId = `${project.id}-title`
+  const poster = flagship ? '/assets/urbanmind-twin.jpg' : project.demo?.poster
+  const story = buildStories[project.id]
+  const moment = projectMoments[project.id]
+  const media = (
+      <div className="portfolio-media">
+        {project.demo
+          ? playing
+            ? <div className="portfolio-video">
+                <video controls autoPlay playsInline preload="metadata" poster={poster}
+                  aria-label={`${project.name} demonstration`}>
+                  <source src={project.demo.src} type="video/mp4" />
+                </video>
+                <button type="button" onClick={() => setPlaying(false)}>Close video</button>
+              </div>
+            : <button type="button" className="portfolio-preview" onClick={() => setPlaying(true)}
+                aria-label={`Play ${project.name} demo, ${project.demo.duration}`}>
+                <img src={poster} alt={`${project.name} product screen`} width="1440" height="810" loading="lazy" />
+                <span className="portfolio-play"><b aria-hidden="true">▶</b><span>Watch demo<small>{project.demo.duration}</small></span></span>
+              </button>
+          : <div className="portfolio-flow">
+              <span className="chapter-label">PROJECT FLOW</span>
+              <SystemGraph project={project} reduced={true} />
+            </div>}
+      </div>
+  )
 
   return (
-    <motion.article
-      id={project.id}
-      className={`case-card ${index % 2 ? 'case-reverse' : ''}`}
-      initial={reduced ? false : { opacity: 0.5, y: 55 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.12 }}
-      transition={{ duration: 0.65, ease: [0.2, 0.7, 0.2, 1] }}
-    >
-      <div className="case-top">
-        <span>{project.number} / {project.category}</span>
-        <span>{project.year}</span>
-      </div>
-      <div className="case-layout">
-        <div className="case-art" ref={artRef}>
-          {project.demo
-            ? isPlaying
-              ? <div className="case-video-playing">
-                  <video controls autoPlay playsInline preload="metadata" poster={project.demo.poster} aria-label={`${project.name} ${project.demo.label}`}>
-                    <source src={project.demo.src} type="video/mp4" />
-                    Your browser cannot play this video.
-                  </video>
-                  <button type="button" className="case-video-close" onClick={() => setIsPlaying(false)} aria-label={`Close ${project.name} video`}>Close video</button>
-                </div>
-              : <button type="button" className="case-video-preview" onClick={playDemo} aria-label={`Play ${project.name} ${project.demo.label}, ${project.demo.duration}`}>
-                  <img src={project.demo.poster} alt="" loading="lazy" />
-                  <span className="case-video-overlay" aria-hidden="true">
-                    <span className="case-video-play">▶</span>
-                    <span><strong>{project.demo.label}</strong><small>{project.demo.duration} · Play video</small></span>
-                  </span>
-                </button>
-            : <div className="case-graph">
-                <span className="visual-heading">SIMPLIFIED PROJECT FLOW / {project.number}</span>
-                <SystemGraph project={project} reduced={reduced} />
-                <span className="visual-footer">{project.category.toUpperCase()} · PROJECT MAP</span>
-              </div>
-          }
+    <motion.article className={`portfolio-project${flagship ? ' portfolio-project--flagship' : ''}`}
+      id={project.id} tabIndex={-1} aria-labelledby={headingId} style={{ '--project-color': color }}
+      initial={flagship || reduced ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: .28, ease: [.2, .7, .2, 1] }}>
+      <header className="portfolio-project-heading">
+        <div>
+          <span className="chapter-label">{flagship ? 'Talan Tunisia · AI Engineering Internship' : project.category}</span>
+          <Heading id={headingId}>{project.name}</Heading>
+          <p>{project.short}</p>
         </div>
-        <div className="case-copy">
-          <span className="case-eyebrow">SELECTED WORK / {project.number}</span>
-          <h3>{project.name}</h3>
-          <p className="case-lede">{project.short}</p>
-          <ul className="case-evidence" aria-label={`${project.name} at a glance`}>
-            {project.evidence.map(item => <li key={item}>{item}</li>)}
-          </ul>
-          <div className="case-story">
-            <div><span>The problem</span><p>{project.detail}</p></div>
-            <div><span>The solution</span><p>{project.solution}</p></div>
-            <div><span>Design choice</span><p>{project.decision}</p></div>
-          </div>
-          <div className="case-meta">
-            <div>
-              <span>Context</span>
-              <p>{project.context}</p>
-            </div>
-            <div>
-              <span>Scope</span>
-              <p>{project.status}</p>
-            </div>
-            <div>
-              <span>Built with</span>
-              <p>{project.stack}</p>
-            </div>
-          </div>
-          <div className="case-links">
-            <span className="case-links-label">VERIFY THE BUILD</span>
-            {project.demo && <button type="button" onClick={playDemo}>Watch {project.demo.label.toLowerCase()}</button>}
-            {project.live && <a href={project.live} target="_blank" rel="noopener noreferrer">Live product ↗</a>}
-            <a href={project.source} target="_blank" rel="noopener noreferrer">GitHub source ↗</a>
-            {project.proof.map(item => <a key={item.label} href={item.url} target="_blank" rel="noopener noreferrer">{item.label} ↗</a>)}
-          </div>
+        <div className="portfolio-project-links">
+          {project.live && <a href={project.live} target="_blank" rel="noopener noreferrer">Open live app ↗</a>}
+          {project.source && <a href={project.source} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}
         </div>
+      </header>
+      <div className="case-demo">{media}</div>
+      {flagship && <UrbanMindDecision project={project} />}
+      <div className="portfolio-footnote">
+        {!flagship && <p>{project.context}</p>}
+        <ul>{project.evidence.map(item => <li key={item}>{item}</li>)}</ul>
       </div>
+      {!flagship && <aside className={`build-moment${moment ? ' build-moment--photo' : ''}`} aria-label={`${story ? 'Build story' : 'Engineering note'} for ${project.name}`}>
+        {moment && <figure className="moment-photo">
+          <a href={moment.src} target="_blank" rel="noopener noreferrer" aria-label={`View full photo: ${moment.caption}`}>
+            <img src={moment.src} alt={moment.alt} loading="lazy" width="1280" height="960" />
+            <span className="moment-expand" aria-hidden="true">↗</span>
+          </a>
+          <figcaption><span>{moment.caption}</span><strong>{moment.result}</strong></figcaption>
+        </figure>}
+        <div className="decision-record">
+          <div className="decision-record-stamp"><BrandMark /><span>{moment?.label ?? (story ? 'FROM THE BUILD' : 'ENGINEERING NOTE')}</span></div>
+          <div><h4>{story?.title ?? decisionTitles[project.id]}</h4><p>{story?.text ?? project.decision}</p></div>
+          <a href="#about" aria-label="Read more about Aziz">— Aziz ↗</a>
+        </div>
+      </aside>}
+      {flagship && <details className="portfolio-notes portfolio-demo">
+        <summary>From site boundary to 3D result <span aria-hidden="true">+</span></summary>
+        <UrbanMindWalkthrough />
+      </details>}
+      <details className="portfolio-notes">
+        <summary>Read the design notes <span aria-hidden="true">+</span></summary>
+        <div className="portfolio-notes-grid">
+          <div><h4>Problem</h4><p>{project.detail}</p></div>
+          <div><h4>Solution</h4><p>{project.solution}</p></div>
+          {story && <div><h4>Engineering decision</h4><p>{project.decision}</p></div>}
+          <div><h4>Scope</h4><p>{project.status}</p></div>
+        </div>
+        <p className="portfolio-stack"><strong>Built with</strong> {project.stack}</p>
+        {!flagship && project.proof.length > 0 && <div className="index-links">{project.proof.map(item => (
+          <a key={item.label} href={item.url} target="_blank" rel="noopener noreferrer">{item.label} ↗</a>
+        ))}</div>}
+      </details>
       <details className="architecture-disclosure">
-        <summary><span>Explore {project.name} architecture</span><span>FOUR SYSTEM LAYERS <b aria-hidden="true">+</b></span></summary>
+        <summary><span>Explore system architecture</span><span>{project.architecture.length} LAYERS <b aria-hidden="true">+</b></span></summary>
         <ArchitecturePanel project={project} />
       </details>
     </motion.article>
   )
 }
 
-/* ─── Work ─── */
-function Work() {
-  const reduced = useReducedMotion()
-  const agenticHire = projects.find(project => project.id === 'agentichire')
+const showcaseArt = {
+  urbanmind: { image: '/assets/urbanmind-twin.jpg', clip: '/media/urbanmind-preview.mp4', caption: 'Inspecting a building in the 3D twin', color: '#d4e7a6' },
+  agentichire: { image: '/assets/desk-agentichire-search.jpg', clip: '/media/agentichire-preview.mp4', caption: 'Browsing jobs matched to a candidate’s CV', color: '#a7caff' },
+  vendex: { image: '/assets/desk-vendex-signals.jpg', clip: '/media/vendex-preview.mp4', caption: 'Inspecting forensic signals from a claim photo', color: '#ffad98' },
+  syntern: { image: '/media/syntern-poster.jpg', clip: '/media/syntern-preview.mp4', caption: 'A conversation with a simulated teammate', color: '#ffd392' },
+  groov: { caption: 'From study material to a guided session', color: '#c6beff' },
+  surgiguard: { image: '/media/surgiguard-poster.jpg', clip: '/media/surgiguard-preview.mp4', caption: 'Exploring the recovery monitoring prototype', color: '#a9e2d3', portrait: true }
+}
+
+function ProjectHighlight({ project, art, reduced }) {
+  const videoRef = useRef(null)
+  const [playing, setPlaying] = useState(false)
+  const [preference, setPreference] = useState(null)
+  const shouldPlay = preference ?? !reduced
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!shouldPlay) {
+      video.pause()
+      return
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) video.play().catch(() => {})
+      else video.pause()
+    }, { threshold: .3 })
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [shouldPlay])
+
+  function togglePlayback() {
+    if (playing) {
+      setPreference(false)
+      videoRef.current.pause()
+    } else {
+      setPreference(true)
+      videoRef.current.play().catch(() => {})
+    }
+  }
 
   return (
-    <section className="work-section" id="work" aria-labelledby="work-title">
-      <motion.div
-        className="section-intro"
-        initial={reduced ? false : { opacity: 0, y: 35 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: [0.2, 0.7, 0.2, 1] }}
-      >
-        <span>01 / SELECTED WORK</span>
-        <h2 id="work-title">Systems built<br />to do something<span>.</span></h2>
-        <p>Start with the working artifacts. Then inspect the decisions and source behind each system.</p>
-      </motion.div>
-      <div className="proof-index" id="proof" aria-label="Quick paths to project evidence">
-        <div className="proof-index-heading">
-          <span>FOR A QUICK REVIEW</span>
-          <strong>Proof before pitch.</strong>
+    <div className="work-showcase-image work-showcase-reel">
+      <video ref={videoRef} src={art.clip} poster={art.image} preload="none" muted loop playsInline
+        aria-label={`${project.name} demo highlight`}
+        onPlaying={() => setPlaying(true)} onPause={() => setPlaying(false)} />
+      <button type="button" className="reel-toggle" onClick={togglePlayback}>
+        <span aria-hidden="true">{playing ? 'Ⅱ' : '▶'}</span>
+        {playing ? 'Pause preview' : 'Play preview'}
+      </button>
+    </div>
+  )
+}
+
+function Work() {
+  const [selected, setSelected] = useState(() => window.location.hash.slice(1))
+  const jumpToCase = useRef(true)
+  const reduced = useReducedMotion()
+
+  useEffect(() => {
+    function selectFromHash() {
+      const id = window.location.hash.slice(1)
+      if (!portfolioProjects.some(item => item.id === id)) return
+      jumpToCase.current = true
+      setSelected(id)
+    }
+    window.addEventListener('hashchange', selectFromHash)
+    return () => window.removeEventListener('hashchange', selectFromHash)
+  }, [])
+
+  const project = portfolioProjects.find(item => item.id === selected) ?? portfolioProjects[0]
+  const art = showcaseArt[project.id]
+
+  useEffect(() => {
+    if (!jumpToCase.current || window.location.hash !== `#${project.id}`) return
+    jumpToCase.current = false
+    const detail = document.getElementById(project.id)
+    detail?.focus({ preventScroll: true })
+    detail?.scrollIntoView()
+  }, [project])
+
+  function selectProject(id) {
+    jumpToCase.current = false
+    window.history.replaceState(window.history.state, '', `#${id}`)
+    setSelected(id)
+  }
+
+  return (
+    <section className="portfolio-collection" id="work" aria-labelledby="work-title">
+      <div className="work-showcase" style={{ '--project-color': art.color }}>
+        <div className="work-showcase-index">
+          <h2 id="work-title">Selected <em>work.</em></h2>
+          <div className="work-showcase-picker" role="group" aria-label="Select a project">
+            {portfolioProjects.map(item => (
+              <button type="button" key={item.id} aria-pressed={item.id === project.id}
+                aria-controls="work-preview work-case" onClick={() => selectProject(item.id)}>
+                <span><strong>{item.name}</strong><small>{item.category}</small></span>
+                <span aria-hidden="true">{item.id === project.id ? '→' : '·'}</span>
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="proof-index-items">
-          <div>
-            <span>LIVE APPLICATION</span>
-            <strong>UrbanMind</strong>
-            <p>Parcel-to-plan workflow, with implementation pull requests in the case study.</p>
-            <a href="https://khatatli-urban-twin.vercel.app/" target="_blank" rel="noopener noreferrer">Open application ↗</a>
-          </div>
-          <div>
-            <span>{agenticHire.demo.duration} RECORDED DEMO</span>
-            <strong>AgenticHire</strong>
-            <p>Candidate and recruiter paths, including CV-to-job matching.</p>
-            <a href={agenticHire.demo.src} target="_blank" rel="noopener noreferrer">Watch full demo ↗</a>
-          </div>
-          <div>
-            <span>3:09 RECORDED DEMO</span>
-            <strong>Vendex</strong>
-            <p>Claim image through separate forensic signals to an explainable report.</p>
-            <a href="/media/vendex-demo.mp4" target="_blank" rel="noopener noreferrer">Watch analysis ↗</a>
-          </div>
-          <div>
-            <span>PUBLIC REPOSITORY</span>
-            <strong>INAT / LSTE</strong>
-            <p>Research monitoring and reviewed parcel-water decision support prototype.</p>
-            <a href="https://github.com/azizhraghi/lab_research" target="_blank" rel="noopener noreferrer">Inspect source ↗</a>
+        <div className="work-showcase-preview" id="work-preview">
+          <motion.figure className={`work-showcase-figure${art.portrait ? ' work-showcase-figure--portrait' : ''}`}
+            key={project.id} initial={reduced ? false : { opacity: .45, y: 6 }}
+            animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .28 }}>
+            {art.clip ? <ProjectHighlight project={project} art={art} reduced={reduced} />
+              : <a className="work-showcase-image" href={`#${project.id}`} aria-label={`Open ${project.name} case study`}>
+                  <SystemGraph project={project} reduced={true} />
+                </a>}
+            <figcaption>{art.caption}{art.clip && <span>8-second demo excerpt</span>}</figcaption>
+          </motion.figure>
+          <div className="work-showcase-summary">
+            <p aria-live="polite">{project.short}</p>
+            <a href={`#${project.id}`}>Jump to case study <span aria-hidden="true">↓</span></a>
           </div>
         </div>
       </div>
-      <div className="cases">
-        {projects.map((project, index) => <CaseStudy key={project.id} project={project} index={index} />)}
+      <div id="work-case">
+        <a className="case-return" href="#work">↑ Back to selected work</a>
+        <ProjectDisplay key={project.id} project={project} color={art.color} />
       </div>
     </section>
   )
@@ -659,9 +758,9 @@ function Toolchain() {
     <section className="toolchain-section" id="toolchain" aria-labelledby="toolchain-title">
       <div className="toolchain-inner">
         <div className="toolchain-heading">
-          <span className="toolchain-eyebrow">BEHIND THE BUILDS / SELECTED TOOLS</span>
+          <span className="toolchain-eyebrow">03 / TOOLCHAIN</span>
           <h2 id="toolchain-title">The stack follows<br /><em>the problem.</em></h2>
-          <p>Not a badge collection. These are the tools behind the systems above—each one takes you to a project where it has a job.</p>
+          <p>Choose a tool to see how I used it in a project.</p>
         </div>
         <div className="toolchain-lanes">
           {toolchainLanes.map((lane, laneIndex) => (
@@ -708,82 +807,89 @@ function Toolchain() {
   )
 }
 
-/* ─── About ─── */
+/* ─── Experience and About ─── */
 function About() {
-  const reduced = useReducedMotion()
+  const [role, setRole] = useState('organizer')
+  const roles = {
+    student: {
+      label: 'ENSTAB',
+      text: 'I’m in my final year at ENSTAB, specializing in Digitalisation and Data Analysis after a preparatory cycle in Mathematics and Physics.',
+      href: cvUrl, link: 'See my education'
+    },
+    coordinator: {
+      label: 'ETC Junior Entreprise',
+      text: 'At ETC Junior Entreprise, I work on project planning, team coordination, client communication, and delivery tracking.',
+      href: cvUrl, link: 'Read my CV'
+    },
+    organizer: {
+      label: 'ACM ENSTAB',
+      text: 'I chaired the ACM ENSTAB Club from September 2025 to September 2026, helping run technical training, programming contests, and club activities.',
+      href: cvUrl, link: 'Read my CV'
+    }
+  }
+  const currentRole = roles[role]
 
   return (
-    <>
-      <section className="experience-section" id="experience" aria-labelledby="experience-title">
-        <div className="section-label">02 / EXPERIENCE</div>
-        <motion.div
-          className="experience-content"
-          initial={reduced ? false : { opacity: 0.5, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-        >
+    <section className="field-journal" id="experience" aria-labelledby="experience-title">
+      <div className="journal-inner">
+        <div className="journal-heading">
+          <span className="chapter-label">02 / EXPERIENCE</span>
+          <h2 id="experience-title">Where I learned<br /><em>to build.</em></h2>
+          <a href={cvUrl} download="HraghiMedAziz_CV.pdf">Download my CV ↓</a>
+        </div>
+        <div className="journal-entries">
+          <article className="journal-entry journal-entry--talan">
+            <div className="journal-entry-copy">
+            <span className="chapter-label">JUL–AUG 2026 / TUNISIA</span>
+            <h3>Talan Tunisia</h3>
+            <p className="journal-role">AI Engineer Intern · SummerCamp</p>
+            <p>With the Bambalouni team, I worked on UrbanMind’s path from terrain analysis and geometry to an explorable 3D view, including a workflow for existing neighborhoods.</p>
+            <div className="index-links">
+              <a href="#urbanmind">UrbanMind case study ↘</a>
+              <a href="https://github.com/inesCherif/Khatatli_UrbanTwin/pull/24" target="_blank" rel="noopener noreferrer">Analysis and 3D work ↗</a>
+              <a href="https://github.com/inesCherif/Khatatli_UrbanTwin/pull/37" target="_blank" rel="noopener noreferrer">Existing city workflow ↗</a>
+            </div>
+            </div>
+            <figure className="experience-photo">
+              <a href="/assets/moments/talan-team.png" target="_blank" rel="noopener noreferrer" aria-label="View full Talan team photo">
+                <img src="/assets/moments/talan-team.png" alt="The Talan Tunisia SummerCamp team together at the office" loading="lazy" width="1280" height="720" />
+              </a>
+              <figcaption>SummerCamp 2026 / Talan Tunisia</figcaption>
+            </figure>
+          </article>
+          <article className="journal-entry journal-entry--research">
+            <div>
+            <span className="chapter-label">JUL–AUG 2026 / REMOTE</span>
+            <h3>INAT / LSTE</h3>
+            <p className="journal-role">Applied AI Intern</p>
+            </div>
+            <div>
+            <p>I built research monitoring workflows across arXiv, PubMed, and Scopus. I also worked on a prototype that uses reviewed field data to compare water balance scenarios for agricultural parcels.</p>
+            <div className="index-links">
+              <a href="https://github.com/azizhraghi/lab_research" target="_blank" rel="noopener noreferrer">Research platform ↗</a>
+            </div>
+            </div>
+          </article>
+        </div>
+        <aside className="journal-personal" id="about" aria-labelledby="about-title">
+          <img src="/assets/med-aziz-portrait.jpg" alt="" width="160" height="160" loading="lazy" />
           <div>
-            <span>JUL — AUG 2026</span>
-            <h2 id="experience-title">Talan<br />Tunisia<span>.</span></h2>
-          </div>
-          <div>
-            <p className="experience-role">AI Engineer Intern · SummerCamp</p>
-            <p>I worked with the Bambalouni team on UrbanMind. The internship connected analysis and geometry in the backend to an explorable 3D interface, including an existing-city workflow.</p>
-            <div className="experience-links">
-              <a href="https://github.com/inesCherif/Khatatli_UrbanTwin/pull/24" target="_blank" rel="noopener noreferrer">See analysis and 3D work ↗</a>
-              <a href="https://github.com/inesCherif/Khatatli_UrbanTwin/pull/37" target="_blank" rel="noopener noreferrer">See existing-city integration ↗</a>
+            <span className="chapter-label">MED AZIZ HRAGHI / ENSTAB</span>
+            <h3 id="about-title">Outside the project view.</h3>
+            <p>I’m studying digitalisation and data analysis at ENSTAB. Alongside building software, I’ve worked in internship teams and helped organize a programming community.</p>
+            <div className="personal-role-picker" role="group" aria-label="Explore Aziz’s experience">
+              {Object.entries(roles).map(([id, item]) => (
+                <button type="button" key={id} aria-pressed={role === id} onClick={() => setRole(id)}>{item.label}</button>
+              ))}
+            </div>
+            <div className="personal-role-note" aria-live="polite">
+              <p>{currentRole.text}</p>
+              <a href={currentRole.href}>{currentRole.link} ↗</a>
             </div>
           </div>
-        </motion.div>
-        <motion.div
-          className="experience-content experience-secondary"
-          initial={reduced ? false : { opacity: 0.5, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div>
-            <span>JUL — AUG 2026 · REMOTE</span>
-            <h2>INAT<span>.</span></h2>
-          </div>
-          <div>
-            <p className="experience-role">Applied AI Intern · LSTE</p>
-            <p>I built research-monitoring workflows across ArXiv, PubMed, and Scopus, using semantic retrieval and deduplication. I also worked on a parcel-water decision-support prototype that combines reviewed field data with water-balance scenarios. Field validation remains to be done.</p>
-            <div className="experience-links">
-              <a href="https://github.com/azizhraghi/lab_research" target="_blank" rel="noopener noreferrer">Explore the research platform ↗</a>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      <section className="about-section" id="about" aria-labelledby="about-title">
-        <div className="section-label">03 / ABOUT</div>
-        <motion.div
-          className="about-layout"
-          initial={reduced ? false : { opacity: 0.5, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 id="about-title">Engineer<br />in practice<span>.</span></h2>
-          <div>
-            <p>I'm an engineering student at ENSTAB, specializing in digitalisation and data analysis. I like the difficult middle of AI products: making data usable, choosing where agents help, and giving people a clear way to understand the result.</p>
-            <p>Outside product work, I chaired the ACM ENSTAB Club and helped run programming training and contests.</p>
-            <div className="about-columns">
-              <div>
-                <span>CORE WORK</span>
-                <p>Multi-agent systems<br />RAG and retrieval<br />Computer vision<br />Geospatial analysis</p>
-              </div>
-              <div>
-                <span>APPROACH</span>
-                <p>Ground outputs in sources<br />Keep geometry deterministic<br />Make decisions inspectable</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-    </>
+        </aside>
+      </div>
+    </section>
   )
 }
 
@@ -804,9 +910,9 @@ function Contact() {
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.6 }}
       >
-        <h2>Let's build<br />something<br /><em>that matters.</em></h2>
+        <h2>Have a project<br />in mind?<br /><em>Say hello.</em></h2>
         <div>
-          <p>Tell me about the problem, the team, or the idea.</p>
+          <p>I’m interested in applied AI roles and teams building products around real data.</p>
           <a href="mailto:medazizhraghi@gmail.com" className="contact-email">medazizhraghi@gmail.com <span aria-hidden="true">↗</span></a>
         </div>
       </motion.div>
@@ -815,7 +921,7 @@ function Contact() {
         <div>
           <a href="https://github.com/azizhraghi" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
           <a href="https://www.linkedin.com/in/med-aziz-hraghi-b45a04248/" target="_blank" rel="noopener noreferrer">LINKEDIN ↗</a>
-          <a href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf">CV ↓</a>
+          <a href={cvUrl} download="HraghiMedAziz_CV.pdf">CV ↓</a>
         </div>
         <a href="#top">BACK TO TOP ↑</a>
       </div>
@@ -835,10 +941,10 @@ function App() {
       <motion.div className="page-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
       <Header />
       <main>
-        <Hero />
+        <HelloAziz />
         <Work />
-        <Toolchain />
         <About />
+        <Toolchain />
       </main>
       <Contact />
     </>
