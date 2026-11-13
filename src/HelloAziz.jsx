@@ -13,7 +13,10 @@ export default function HelloAziz() {
             <p className="atlas-availability">Available for a 6-month applied AI internship · Jan–Feb 2027</p>
             <div className="atlas-actions">
               <a href="#work">Explore the work <span aria-hidden="true">↘</span></a>
-              <a href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf">Download CV ↓</a>
+              <div className="atlas-secondary-actions">
+                <a href="/assets/Med_Aziz_Hraghi_CV_2026.pdf" download="HraghiMedAziz_CV.pdf">Download CV ↓</a>
+                <a href="https://github.com/azizhraghi" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+              </div>
             </div>
           </div>
           <figure className="atlas-portrait">
